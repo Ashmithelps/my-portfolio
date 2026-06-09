@@ -18,7 +18,7 @@ export const profile = {
   ].join(' '),
 
   // [PLACEHOLDER] Where you're based
-  location: 'San Francisco, CA',
+  location: 'Ropar, Punjab',
 
   // [PLACEHOLDER] Public email
   email: 'thakurashmit20@gmail.com',
@@ -27,10 +27,10 @@ export const profile = {
   resumeUrl: '/resume.pdf',
 
   // [PLACEHOLDER] Your GitHub handle
-  github: 'ashmitthakur',
+  github: 'ashmithelps',
 
   // [PLACEHOLDER] Your LinkedIn path (after linkedin.com/in/)
-  linkedin: 'ashmitthakur',
+  linkedin: 'ashmitxthakur',
 
   // [PLACEHOLDER] Optional: Twitter/X handle (without @), or null to hide
   twitter: null as string | null,
