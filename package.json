@@ -6,12 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
+    "@testing-library/react": "^16.3.2",
+    "@vitest/ui": "^4.1.8",
+    "happy-dom": "^20.10.2",
     "next": "16.2.7",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "vitest": "^4.1.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
