@@ -33,7 +33,7 @@ export const profile = {
   linkedin: 'ashmitxthakur',
 
   // [PLACEHOLDER] Optional: Twitter/X handle (without @), or null to hide
-  twitter: null as string | null,
+  twitter: 'ashmitxthakur',
 
   // [PLACEHOLDER] Optional: personal website, or null
   website: null as string | null,
