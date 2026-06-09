@@ -1,30 +1,27 @@
-// ─── EDIT THIS FILE to update your skills ────────────────────────────────────
-
 export interface SkillCategory {
   category: string
   items: string[]
 }
 
 export const skills: SkillCategory[] = [
-  // [PLACEHOLDER] Replace with your actual skills
   {
     category: 'Languages',
-    items: ['TypeScript', 'JavaScript', 'Python', 'Go', 'SQL'],
+    items: ['Java', 'C++', 'Python', 'SQL', 'React.js'],
   },
   {
-    category: 'Frontend',
-    items: ['React', 'Next.js', 'Tailwind CSS', 'Framer Motion'],
+    category: 'Frameworks & Technologies',
+    items: ['Spring Boot', 'Spring Security', 'Django', 'jQuery', 'Hibernate', 'Kafka', 'Generative AI', 'Agentic AI'],
   },
   {
-    category: 'Backend',
-    items: ['Node.js', 'FastAPI', 'PostgreSQL', 'Redis', 'gRPC'],
+    category: 'Cloud & DevOps',
+    items: ['AWS (EC2, S3)', 'Docker', 'Kubernetes', 'GitHub Actions', 'Azure Fundamentals'],
   },
   {
-    category: 'Infrastructure',
-    items: ['AWS', 'Docker', 'Kubernetes', 'Vercel', 'GitHub Actions'],
+    category: 'Tools & Platforms',
+    items: ['Git', 'Postman', 'Figma', 'Framer', 'Google Analytics', 'Google Colab', 'Excel', 'Microsoft 365'],
   },
   {
-    category: 'Tools',
-    items: ['Git', 'Vim', 'Figma', 'Linear'],
+    category: 'Core CS',
+    items: ['Data Structures & Algorithms', 'OOP', 'OS Fundamentals', 'SDLC', 'Design Patterns', 'Unit Testing (JUnit)', 'NoSQL'],
   },
 ]

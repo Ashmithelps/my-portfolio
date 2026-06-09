@@ -1,6 +1,6 @@
 import type { Command, OutputLine } from '@/lib/shell/types'
 import { profile } from '@/content/profile'
-import { experience, education } from '@/content/resume'
+import { experience, education, achievements } from '@/content/resume'
 
 const resumeCmd: Command = {
   name: 'resume',
@@ -38,7 +38,18 @@ const resumeCmd: Command = {
     for (const edu of education) {
       lines.push({ type: 'br' })
       lines.push({ type: 'text', value: `  ${edu.degree}`, className: 'text-bright' })
-      lines.push({ type: 'text', value: `  ${edu.institution} · ${edu.period}`, className: 'text-dim' })
+      lines.push({
+        type: 'text',
+        value: `  ${edu.institution} · ${edu.period}${edu.detail ? ` · ${edu.detail}` : ''}`,
+        className: 'text-dim',
+      })
+    }
+
+    lines.push({ type: 'br' })
+    lines.push({ type: 'text', value: 'ACHIEVEMENTS', className: 'text-bright' })
+    lines.push({ type: 'br' })
+    for (const a of achievements) {
+      lines.push({ type: 'text', value: `  • ${a}` })
     }
 
     lines.push({ type: 'br' })

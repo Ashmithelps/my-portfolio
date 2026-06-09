@@ -1,5 +1,3 @@
-// ─── EDIT THIS FILE to add / update your projects ────────────────────────────
-
 export interface Project {
   name: string
   description: string
@@ -7,51 +5,64 @@ export interface Project {
   tech: string[]
   url?: string
   repo?: string
-  highlight: boolean  // show in `projects` summary; set false to hide
+  highlight: boolean
   year?: number
 }
 
 export const projects: Project[] = [
-  // [PLACEHOLDER] Replace with your real projects
+  {
+    name: 'Campus Crush',
+    description: 'Secure anonymous messaging platform for college students verified via UIDs.',
+    longDescription:
+      'Engineered a secure, anonymous messaging platform utilizing college-issued UIDs to verify user originality. ' +
+      'Developed a robust OTP-based authentication pipeline that reduced fraudulent account creation by 90%. ' +
+      'Integrated real-time communication features for seamless, low-latency chat between anonymous participants.',
+    tech: ['React.js', 'Spring Boot', 'RESTful APIs'],
+    highlight: true,
+    year: 2026,
+  },
+  {
+    name: 'Smartly Tasks',
+    description: 'Scalable task management web app built with Core Java and Spring Boot.',
+    longDescription:
+      'Developed a scalable task management web application using Core Java and Spring Boot, applying OOP principles, ' +
+      'exception handling, and RESTful API design for a clean, maintainable backend architecture. ' +
+      'Implemented full CRUD operations with Spring Security for efficient task creation, updating, and deletion.',
+    tech: ['Spring Boot', 'Spring Security', 'RESTful APIs', 'Java'],
+    highlight: true,
+    year: 2025,
+  },
+  {
+    name: 'Async Task Scheduler & Image Processor',
+    description: 'C++17 multithreaded task scheduler achieving 3.8x speedup on Apple M4.',
+    longDescription:
+      'Built a task scheduler using synchronization primitives (mutex, condition variable) to optimize multi-core CPU utilization. ' +
+      'Engineered an automated pipeline for bulk image filtering achieving a 3.8x speedup on Apple M4 architecture. ' +
+      'Leverages C++17 features including structured bindings, std::filesystem, and parallel algorithms.',
+    tech: ['C++17', 'Multithreading', 'Systems Programming'],
+    highlight: true,
+    year: 2025,
+  },
   {
     name: 'TerminalFolio',
     description: 'This portfolio — a fully interactive CLI terminal built with Next.js.',
     longDescription:
       'A portfolio website styled as an interactive command-line terminal. ' +
-      'Built with Next.js App Router, TypeScript, and a custom shell engine ' +
-      'featuring a virtual filesystem, command registry with fuzzy matching, ' +
-      'tab-completion, and multiple themes.',
+      'Built with Next.js App Router, TypeScript, and a custom shell engine featuring a virtual filesystem, ' +
+      'command registry with fuzzy matching, tab-completion, five themes, and easter eggs.',
     tech: ['Next.js', 'TypeScript', 'Tailwind CSS'],
-    repo: 'https://github.com/ashmitthakur/portfolio',
+    repo: 'https://github.com/ashmithelps/portfolio',
     highlight: true,
-    year: 2024,
+    year: 2026,
   },
   {
-    name: 'Project Alpha',
-    description: '[PLACEHOLDER] A brief description of what this project does.',
+    name: 'UI/UX Design Portfolio',
+    description: 'High-fidelity UI designs for Nike, mobile booking apps, and banking interfaces.',
     longDescription:
-      '[PLACEHOLDER] A longer description — what problem it solved, ' +
-      'what you learned, what makes it interesting.',
-    tech: ['[PLACEHOLDER] React', 'Node.js', 'PostgreSQL'],
-    url: 'https://example.com',
-    repo: 'https://github.com/ashmitthakur/project-alpha',
-    highlight: true,
-    year: 2024,
-  },
-  {
-    name: 'Project Beta',
-    description: '[PLACEHOLDER] Another project description.',
-    longDescription: '[PLACEHOLDER] More detail about Project Beta.',
-    tech: ['[PLACEHOLDER] Python', 'FastAPI', 'Redis'],
-    repo: 'https://github.com/ashmitthakur/project-beta',
-    highlight: true,
-    year: 2023,
-  },
-  {
-    name: 'Project Gamma',
-    description: '[PLACEHOLDER] Yet another project.',
-    tech: ['[PLACEHOLDER] Go', 'gRPC'],
-    repo: 'https://github.com/ashmitthakur/project-gamma',
+      'Created a high-fidelity motion graphic ad for Nike using animation, typography, and color psychology. ' +
+      'Designed a user-centric mobile interface with real-time booking workflows, increasing task efficiency by 20%. ' +
+      'Prototyped a secure banking application UI, validated for usability and consistency with 5 real users.',
+    tech: ['Figma', 'Framer'],
     highlight: false,
     year: 2023,
   },

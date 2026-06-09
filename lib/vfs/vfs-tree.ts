@@ -2,7 +2,7 @@ import type { VFSDir } from './types'
 import { profile } from '@/content/profile'
 import { projects } from '@/content/projects'
 import { skills } from '@/content/skills'
-import { experience, education } from '@/content/resume'
+import { experience, education, achievements } from '@/content/resume'
 
 function buildAboutContent(): string {
   return [
@@ -27,8 +27,11 @@ function buildResumeContent(): string {
 
   lines.push('\n── EDUCATION ──')
   for (const edu of education) {
-    lines.push(`${edu.degree} — ${edu.institution} (${edu.period})`)
+    lines.push(`${edu.degree} — ${edu.institution} (${edu.period}${edu.detail ? `, ${edu.detail}` : ''})`)
   }
+
+  lines.push('\n── ACHIEVEMENTS ──')
+  for (const a of achievements) lines.push(`  • ${a}`)
 
   lines.push(`\nDownload PDF: ${profile.resumeUrl}`)
   return lines.join('\n')
