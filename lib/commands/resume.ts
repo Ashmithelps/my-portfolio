@@ -15,46 +15,48 @@ const resumeCmd: Command = {
         a.download = 'resume.pdf'
         a.click()
       }
-      return [{ type: 'success', value: `Downloading ${profile.resumeUrl}…` }]
+      return [{ type: 'success', value: `  downloading ${profile.resumeUrl}…` }]
     }
 
     const lines: OutputLine[] = [
-      { type: 'text', value: '═══ RÉSUMÉ ═══', className: 'text-bright' },
+      { type: 'text', value: 'resume', className: 'header' },
+      { type: 'text', value: '────────────────────────────────────────', className: 'text-dim' },
       { type: 'br' },
-      { type: 'text', value: 'EXPERIENCE', className: 'text-bright' },
+      { type: 'text', value: '  experience', className: 'text-bright' },
+      { type: 'br' },
     ]
 
     for (const job of experience) {
-      lines.push({ type: 'br' })
       lines.push({ type: 'text', value: `  ${job.role}`, className: 'text-bright' })
-      lines.push({ type: 'text', value: `  ${job.company} · ${job.period}`, className: 'text-dim' })
+      lines.push({ type: 'text', value: `  ${job.company}  ·  ${job.period}`, className: 'text-dim' })
       for (const b of job.bullets) {
-        lines.push({ type: 'text', value: `    • ${b}` })
+        lines.push({ type: 'text', value: `    · ${b}` })
       }
+      lines.push({ type: 'br' })
     }
 
+    lines.push({ type: 'text', value: '  education', className: 'text-bright' })
     lines.push({ type: 'br' })
-    lines.push({ type: 'text', value: 'EDUCATION', className: 'text-bright' })
     for (const edu of education) {
-      lines.push({ type: 'br' })
       lines.push({ type: 'text', value: `  ${edu.degree}`, className: 'text-bright' })
       lines.push({
         type: 'text',
-        value: `  ${edu.institution} · ${edu.period}${edu.detail ? ` · ${edu.detail}` : ''}`,
+        value: `  ${edu.institution}  ·  ${edu.period}${edu.detail ? `  ·  ${edu.detail}` : ''}`,
         className: 'text-dim',
       })
+      lines.push({ type: 'br' })
     }
 
-    lines.push({ type: 'br' })
-    lines.push({ type: 'text', value: 'ACHIEVEMENTS', className: 'text-bright' })
+    lines.push({ type: 'text', value: '  achievements', className: 'text-bright' })
     lines.push({ type: 'br' })
     for (const a of achievements) {
-      lines.push({ type: 'text', value: `  • ${a}` })
+      lines.push({ type: 'text', value: `    · ${a}` })
     }
 
     lines.push({ type: 'br' })
-    lines.push({ type: 'link', label: `  ↓ Download PDF`, href: profile.resumeUrl })
-    lines.push({ type: 'text', value: "  Or run: resume --download", className: 'text-dim' })
+    lines.push({ type: 'text', value: '────────────────────────────────────────', className: 'text-dim' })
+    lines.push({ type: 'link', label: `  download PDF  →  ${profile.resumeUrl}`, href: profile.resumeUrl })
+    lines.push({ type: 'text', value: "  or run: resume --download", className: 'text-dim' })
 
     return lines
   },

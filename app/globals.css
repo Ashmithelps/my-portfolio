@@ -1,78 +1,162 @@
 @import "tailwindcss";
 
-@theme inline {
-  --font-mono: var(--font-mono);
-}
+* { box-sizing: border-box; }
 
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
+html, body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
-/* Blinking cursor */
+/* ── Fonts ──────────────────────────────────────────────────────────────── */
+@theme inline {
+  --font-mono: var(--font-mono);
+}
+
+/* ── Cursor blink ───────────────────────────────────────────────────────── */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
-
 .animate-blink {
-  animation: blink 1s step-start infinite;
+  animation: blink 0.9s step-start infinite;
 }
 
-/* Respect reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  .animate-blink {
-    animation: none;
-    opacity: 1;
+/* ── Output entry fade-in (new entries slide up gently) ─────────────────── */
+@keyframes outputReveal {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.output-entry-animate {
+  animation: outputReveal 90ms ease-out both;
+}
+
+/* ── ASCII art phosphor glow ────────────────────────────────────────────── */
+.ascii-art {
+  text-shadow: 0 0 24px currentColor;
+  filter: brightness(1.08);
+}
+
+/* ── Terminal floating card ─────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  .terminal-card {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 24px 48px rgba(0, 0, 0, 0.55),
+      0 8px 16px rgba(0, 0, 0, 0.35);
   }
 }
 
-/* Screen-reader only utility */
+/* ── CRT overlay (scanlines + vignette) ─────────────────────────────────── */
+.terminal-crt {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Scanlines */
+  .terminal-crt::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.022) 2px,
+      rgba(0, 0, 0, 0.022) 4px
+    );
+  }
+
+  /* Vignette */
+  .terminal-crt::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 50% 40%,
+      transparent 52%,
+      rgba(0, 0, 0, 0.22) 100%
+    );
+  }
+
+  /* ASCII glow */
+  .ascii-art {
+    text-shadow: 0 0 24px currentColor;
+    filter: brightness(1.08);
+  }
+
+  /* Input focus glow — accent top border */
+  .terminal-input-bar {
+    transition: border-top-color 150ms ease;
+  }
+
+  /* Link hover underline reveal */
+  .output-link {
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-color 120ms ease, opacity 120ms ease;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+  }
+  .output-link:hover,
+  .output-link:focus {
+    text-decoration-color: currentColor;
+    opacity: 0.9;
+  }
+}
+
+/* Reduced-motion: disable animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-blink          { animation: none; opacity: 1; }
+  .output-entry-animate   { animation: none; }
+  .ascii-art              { text-shadow: none; filter: none; }
+  .output-link            { text-decoration: underline; }
+}
+
+/* ── Chip styles ─────────────────────────────────────────────────────────── */
+.terminal-chip {
+  transition: color 120ms ease, background-color 120ms ease, border-color 120ms ease;
+}
+.terminal-chip:active {
+  transform: scale(0.95);
+  transition-duration: 60ms;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.18); }
+
+/* ── Focus ring ─────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent, currentColor);
+  outline-offset: 2px;
+}
+
+/* ── Screen-reader only ─────────────────────────────────────────────────── */
 .sr-only {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
 }
 
-/* Scrollbar styling for terminal feel */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
+/* ── Mobile ─────────────────────────────────────────────────────────────── */
+.cursor-text { -webkit-tap-highlight-color: transparent; }
 
-/* Focus ring for keyboard nav */
-:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-
-/* Mobile: prevent tap highlight on terminal body */
-.cursor-text {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Safe area for notched phones */
+/* Safe-area for notched phones */
 .h-dvh {
   height: 100dvh;
   padding-bottom: env(safe-area-inset-bottom);

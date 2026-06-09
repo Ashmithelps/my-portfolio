@@ -9,27 +9,32 @@ const themeCmd: Command = {
   handler({ args }, shell) {
     if (!args[0]) {
       const lines: OutputLine[] = [
-        { type: 'text', value: 'Available themes:', className: 'text-bright' },
+        { type: 'text', value: 'themes', className: 'header' },
+        { type: 'text', value: '────────────────────────────────────────', className: 'text-dim' },
         { type: 'br' },
       ]
       for (const [key, t] of Object.entries(themes)) {
-        const current = key === shell.theme ? ' ← current' : ''
-        lines.push({ type: 'text', value: `  ${key.padEnd(10)} ${t.label}${current}` })
+        const current = key === shell.theme ? '  ← active' : ''
+        lines.push({
+          type: 'text',
+          value: `  ${key.padEnd(12)}${t.label}${current}`,
+          className: current ? 'text-bright' : undefined,
+        })
       }
       lines.push({ type: 'br' })
-      lines.push({ type: 'text', value: "Usage: theme <name>", className: 'text-dim' })
+      lines.push({ type: 'text', value: '  usage: theme <name>', className: 'text-dim' })
       return lines
     }
 
     const name = args[0].toLowerCase()
     if (!themes[name]) {
       return [
-        { type: 'error', value: `theme: unknown theme '${name}'` },
-        { type: 'text', value: `Available: ${Object.keys(themes).join(', ')}` },
+        { type: 'error', value: `  theme: unknown theme '${name}'` },
+        { type: 'text', value: `  available: ${Object.keys(themes).join(', ')}`, className: 'text-dim' },
       ]
     }
     shell.setTheme(name)
-    return [{ type: 'success', value: `Theme set to '${themes[name].label}'` }]
+    return [{ type: 'success', value: `  theme → ${themes[name].label}` }]
   },
 }
 

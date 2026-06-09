@@ -8,12 +8,13 @@ const skillsCmd: Command = {
   usage: 'skills',
   handler() {
     const lines: OutputLine[] = [
-      { type: 'text', value: 'Technical Skills', className: 'text-bright' },
+      { type: 'text', value: 'skills', className: 'header' },
+      { type: 'text', value: '────────────────────────────────────────', className: 'text-dim' },
       { type: 'br' },
     ]
     for (const cat of skills) {
       lines.push({ type: 'text', value: `  ${cat.category}`, className: 'text-bright' })
-      lines.push({ type: 'text', value: `    ${cat.items.join(' · ')}` })
+      lines.push({ type: 'text', value: `  ${cat.items.join('  ·  ')}`, className: 'text-dim' })
       lines.push({ type: 'br' })
     }
     return lines

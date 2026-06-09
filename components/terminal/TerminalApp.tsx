@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import type { HistoryEntry, ShellState } from '@/lib/shell/types'
 import { loadState, saveState, executeCommand, pushHistory } from '@/lib/shell/shell'
-import { themes } from '@/styles/themes'
+import { themes, defaultTheme } from '@/styles/themes'
 import { getBannerLines } from '@/lib/shell/banner'
 import { registry } from '@/lib/commands/index'
 import { vfs } from '@/lib/vfs/instance'
@@ -18,7 +18,6 @@ const BOOT_ENTRY: HistoryEntry = {
   timestamp: 0,
 }
 
-// Konami code
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 
 export default function TerminalApp() {
@@ -30,26 +29,19 @@ export default function TerminalApp() {
   const containerRef = useRef<HTMLDivElement>(null)
   const konamiRef = useRef<string[]>([])
 
-  const theme = themes[shellState.theme] ?? themes.dracula
+  const theme = themes[shellState.theme] ?? themes[defaultTheme]
 
-  useEffect(() => {
-    saveState(shellState)
-  }, [shellState])
+  useEffect(() => { saveState(shellState) }, [shellState])
 
-  // Click anywhere to focus input
   const focusInput = useCallback(() => {
-    const input = containerRef.current?.querySelector('input')
-    input?.focus()
+    containerRef.current?.querySelector('input')?.focus()
   }, [])
 
-  // Konami code listener
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       konamiRef.current.push(e.key)
       konamiRef.current = konamiRef.current.slice(-KONAMI.length)
-      if (konamiRef.current.join(',') === KONAMI.join(',')) {
-        handleRun('matrix')
-      }
+      if (konamiRef.current.join(',') === KONAMI.join(',')) handleRun('matrix')
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
@@ -64,7 +56,6 @@ export default function TerminalApp() {
     setHistoryIndex(-1)
 
     const newState = pushHistory(shellState, trimmed)
-
     let cleared = false
     let newCwd = newState.cwd
     let newTheme = newState.theme
@@ -77,42 +68,30 @@ export default function TerminalApp() {
       (t) => { newTheme = t }
     )
 
-    const updatedState: ShellState = {
-      ...newState,
-      cwd: newCwd,
-      theme: newTheme,
-    }
-
-    setShellState(updatedState)
+    setShellState({ ...newState, cwd: newCwd, theme: newTheme })
 
     if (cleared) {
       setEntries([])
     } else {
-      const entry: HistoryEntry = { input: trimmed, output, timestamp: Date.now() }
-      setEntries((prev) => [...prev, entry])
+      setEntries((prev) => [...prev, { input: trimmed, output, timestamp: Date.now() }])
     }
     setRunning(false)
   }, [shellState, running])
 
   const handleHistoryUp = useCallback(() => {
-    const history = shellState.history
-    if (history.length === 0) return
-    const newIdx = historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1)
-    setHistoryIndex(newIdx)
-    setInputValue(history[newIdx])
+    const { history } = shellState
+    if (!history.length) return
+    const idx = historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1)
+    setHistoryIndex(idx)
+    setInputValue(history[idx])
   }, [shellState.history, historyIndex])
 
   const handleHistoryDown = useCallback(() => {
     if (historyIndex === -1) return
-    const history = shellState.history
-    const newIdx = historyIndex + 1
-    if (newIdx >= history.length) {
-      setHistoryIndex(-1)
-      setInputValue('')
-    } else {
-      setHistoryIndex(newIdx)
-      setInputValue(history[newIdx])
-    }
+    const { history } = shellState
+    const idx = historyIndex + 1
+    if (idx >= history.length) { setHistoryIndex(-1); setInputValue('') }
+    else { setHistoryIndex(idx); setInputValue(history[idx]) }
   }, [shellState.history, historyIndex])
 
   const handleTab = useCallback((value: string): string => {
@@ -123,28 +102,23 @@ export default function TerminalApp() {
       const matches = registry.completions(last)
       if (matches.length === 1) return matches[0]
       if (matches.length > 1) {
-        const entry: HistoryEntry = {
+        setEntries((prev) => [...prev, {
           input: '',
           output: [{ type: 'text', value: matches.join('  '), className: 'text-dim' }],
           timestamp: Date.now(),
-        }
-        setEntries((prev) => [...prev, entry])
+        }])
       }
       return value
     }
 
-    // Filesystem completion
     const fsPaths = vfs.completions(last, shellState.cwd)
-    if (fsPaths.length === 1) {
-      return [...tokens.slice(0, -1), fsPaths[0]].join(' ')
-    }
+    if (fsPaths.length === 1) return [...tokens.slice(0, -1), fsPaths[0]].join(' ')
     if (fsPaths.length > 1) {
-      const entry: HistoryEntry = {
+      setEntries((prev) => [...prev, {
         input: '',
         output: [{ type: 'text', value: fsPaths.join('  '), className: 'text-dim' }],
         timestamp: Date.now(),
-      }
-      setEntries((prev) => [...prev, entry])
+      }])
     }
     return value
   }, [shellState.cwd])
@@ -152,40 +126,57 @@ export default function TerminalApp() {
   const promptStr = `${profile.promptUser}@${profile.promptHost}:${shellState.cwd}$ `
 
   return (
+    // Desktop backdrop
     <div
-      ref={containerRef}
-      onClick={focusInput}
-      className="flex flex-col h-full w-full overflow-hidden cursor-text select-auto"
-      style={{ backgroundColor: theme.bg, color: theme.text }}
+      className="h-dvh w-full flex items-center justify-center overflow-hidden"
+      style={{ backgroundColor: theme.bodyBg }}
     >
-      {/* Title bar */}
+      {/* Floating terminal card */}
       <div
-        className="flex items-center px-4 py-2 shrink-0 select-none"
-        style={{ backgroundColor: theme.surface, borderBottom: `1px solid ${theme.border}` }}
+        ref={containerRef}
+        onClick={focusInput}
+        className="terminal-card relative flex flex-col w-full h-full overflow-hidden cursor-text
+                   sm:rounded-xl sm:max-w-5xl sm:h-[88vh]"
+        style={{
+          backgroundColor: theme.bg,
+          color: theme.text,
+          border: `1px solid ${theme.border}`,
+          // CSS var so child CSS rules can reference the accent without prop drilling
+          '--accent': theme.prompt,
+        } as React.CSSProperties}
       >
-        <div className="flex gap-2 mr-4">
-          <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#ff5f57' }} aria-hidden="true" />
-          <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#febc2e' }} aria-hidden="true" />
-          <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#28c840' }} aria-hidden="true" />
-        </div>
-        <span className="font-mono text-xs" style={{ color: theme.textDim }}>
-          {profile.promptHost} — terminal
-        </span>
-      </div>
+        {/* CRT atmosphere overlay — scanlines + vignette */}
+        <div className="terminal-crt" aria-hidden="true" />
 
-      <TerminalOutput entries={entries} theme={theme} prompt={promptStr} />
-      <QuickChips onCommand={handleRun} theme={theme} />
-      <TerminalInput
-        value={inputValue}
-        onChange={setInputValue}
-        onSubmit={handleRun}
-        onHistoryUp={handleHistoryUp}
-        onHistoryDown={handleHistoryDown}
-        onTab={handleTab}
-        prompt={promptStr}
-        theme={theme}
-        disabled={running}
-      />
+        {/* Title bar */}
+        <div
+          className="flex items-center px-4 py-2.5 shrink-0 select-none relative z-10"
+          style={{ backgroundColor: theme.surface, borderBottom: `1px solid ${theme.border}` }}
+        >
+          <div className="flex gap-1.5 mr-3">
+            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FF5F57' }} aria-hidden="true" />
+            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FEBC2E' }} aria-hidden="true" />
+            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#28C840' }} aria-hidden="true" />
+          </div>
+          <span className="font-mono text-xs tracking-wide" style={{ color: theme.textDim }}>
+            {profile.promptHost} — terminal
+          </span>
+        </div>
+
+        <TerminalOutput entries={entries} theme={theme} prompt={promptStr} />
+        <QuickChips onCommand={handleRun} theme={theme} />
+        <TerminalInput
+          value={inputValue}
+          onChange={setInputValue}
+          onSubmit={handleRun}
+          onHistoryUp={handleHistoryUp}
+          onHistoryDown={handleHistoryDown}
+          onTab={handleTab}
+          prompt={promptStr}
+          theme={theme}
+          disabled={running}
+        />
+      </div>
     </div>
   )
 }

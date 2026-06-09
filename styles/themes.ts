@@ -1,12 +1,13 @@
 export interface Theme {
   name: string
   label: string
+  bodyBg: string   // desktop backdrop behind the floating card
   bg: string
-  surface: string
+  surface: string  // title bar, input bar
   text: string
-  textDim: string
+  textDim: string  // secondary / muted
   textBright: string
-  prompt: string
+  prompt: string   // THE signature accent — prompt $, logo, headers
   promptHost: string
   promptPath: string
   promptSuffix: string
@@ -20,106 +21,97 @@ export interface Theme {
 }
 
 export const themes: Record<string, Theme> = {
-  dracula: {
-    name: 'dracula',
-    label: 'Dracula',
-    bg: '#282a36',
-    surface: '#21222c',
-    text: '#f8f8f2',
-    textDim: '#6272a4',
-    textBright: '#ffffff',
-    prompt: '#ff79c6',
-    promptHost: '#bd93f9',
-    promptPath: '#50fa7b',
-    promptSuffix: '#f8f8f2',
-    success: '#50fa7b',
-    error: '#ff5555',
-    warning: '#ffb86c',
-    link: '#8be9fd',
-    cursor: '#f8f8f2',
-    selection: '#44475a',
-    border: '#44475a',
+  // ── Onyx (amber accent on near-black) — default ───────────────────────────
+  onyx: {
+    name: 'onyx',
+    label: 'Onyx',
+    bodyBg: '#070608',
+    bg: '#0D0D0F',
+    surface: '#131218',
+    text: '#E2DFE8',
+    textDim: '#857F96',
+    textBright: '#F0EDF5',
+    prompt: '#E0A458',       // amber — signature accent
+    promptHost: '#857F96',   // muted
+    promptPath: '#7AB893',   // sage for cwd path
+    promptSuffix: '#524D61', // very dim for $
+    success: '#7AB893',
+    error: '#C96060',
+    warning: '#D4804A',
+    link: '#6B9FBF',
+    cursor: '#E0A458',
+    selection: '#1C1A23',
+    border: '#252330',
   },
-  gruvbox: {
-    name: 'gruvbox',
-    label: 'Gruvbox Dark',
-    bg: '#282828',
-    surface: '#1d2021',
-    text: '#ebdbb2',
-    textDim: '#928374',
-    textBright: '#fbf1c7',
-    prompt: '#fe8019',
-    promptHost: '#d3869b',
-    promptPath: '#b8bb26',
-    promptSuffix: '#ebdbb2',
-    success: '#b8bb26',
-    error: '#fb4934',
-    warning: '#fabd2f',
-    link: '#83a598',
-    cursor: '#ebdbb2',
-    selection: '#3c3836',
-    border: '#504945',
+
+  // ── Phosphor (classic green CRT) ──────────────────────────────────────────
+  phosphor: {
+    name: 'phosphor',
+    label: 'Phosphor',
+    bodyBg: '#020402',
+    bg: '#060806',
+    surface: '#0A0F0A',
+    text: '#90D888',
+    textDim: '#4A7844',
+    textBright: '#B8F0B0',
+    prompt: '#50E040',
+    promptHost: '#4A7844',
+    promptPath: '#50E040',
+    promptSuffix: '#284026',
+    success: '#50E040',
+    error: '#D05050',
+    warning: '#C8B040',
+    link: '#48C8C0',
+    cursor: '#50E040',
+    selection: '#0C1C0C',
+    border: '#182818',
   },
-  nord: {
-    name: 'nord',
-    label: 'Nord',
-    bg: '#2e3440',
-    surface: '#242933',
-    text: '#d8dee9',
-    textDim: '#4c566a',
-    textBright: '#eceff4',
-    prompt: '#88c0d0',
-    promptHost: '#81a1c1',
-    promptPath: '#a3be8c',
-    promptSuffix: '#d8dee9',
-    success: '#a3be8c',
-    error: '#bf616a',
-    warning: '#ebcb8b',
-    link: '#88c0d0',
-    cursor: '#d8dee9',
-    selection: '#3b4252',
-    border: '#3b4252',
+
+  // ── Amber CRT (warm vintage terminal) ────────────────────────────────────
+  amber: {
+    name: 'amber',
+    label: 'Amber CRT',
+    bodyBg: '#080602',
+    bg: '#0E0B07',
+    surface: '#141008',
+    text: '#E8C870',
+    textDim: '#9A7E42',
+    textBright: '#F5DC98',
+    prompt: '#F0B038',
+    promptHost: '#9A7E42',
+    promptPath: '#F0B038',
+    promptSuffix: '#5A4820',
+    success: '#90B858',
+    error: '#C85858',
+    warning: '#E08838',
+    link: '#68B8A0',
+    cursor: '#F0B038',
+    selection: '#201808',
+    border: '#2A2010',
   },
-  matrix: {
-    name: 'matrix',
-    label: 'Matrix',
-    bg: '#0d0d0d',
-    surface: '#000000',
-    text: '#00ff41',
-    textDim: '#007a1f',
-    textBright: '#80ff80',
-    prompt: '#00ff41',
-    promptHost: '#00cc33',
-    promptPath: '#00ff41',
-    promptSuffix: '#80ff80',
-    success: '#00ff41',
-    error: '#ff0000',
-    warning: '#ffff00',
-    link: '#00ffff',
-    cursor: '#00ff41',
-    selection: '#003300',
-    border: '#004400',
-  },
-  light: {
-    name: 'light',
-    label: 'Light',
-    bg: '#fafafa',
-    surface: '#f0f0f0',
-    text: '#1a1a1a',
-    textDim: '#666666',
-    textBright: '#000000',
-    prompt: '#c7254e',
-    promptHost: '#0070c1',
-    promptPath: '#2d7a2d',
-    promptSuffix: '#1a1a1a',
-    success: '#2d7a2d',
-    error: '#cc0000',
-    warning: '#b36b00',
-    link: '#0070c1',
-    cursor: '#1a1a1a',
-    selection: '#cce7ff',
-    border: '#dddddd',
+
+  // ── Paper (warm light mode) ───────────────────────────────────────────────
+  paper: {
+    name: 'paper',
+    label: 'Paper',
+    bodyBg: '#DDD8CE',
+    bg: '#F5F0E8',
+    surface: '#EDE8DF',
+    text: '#2A2520',
+    textDim: '#7A7268',
+    textBright: '#1A1510',
+    prompt: '#8B4010',
+    promptHost: '#7A7268',
+    promptPath: '#3A6840',
+    promptSuffix: '#AEA89E',
+    success: '#3A6840',
+    error: '#8B2020',
+    warning: '#8B5800',
+    link: '#2B5E8E',
+    cursor: '#2A2520',
+    selection: '#D8D2C8',
+    border: '#D0C8BC',
   },
 }
 
-export const defaultTheme = 'dracula'
+export const defaultTheme = 'onyx'

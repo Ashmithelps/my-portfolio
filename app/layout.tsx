@@ -41,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${mono.variable} h-full`}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <meta name="theme-color" content="#282a36" />
+        <meta name="theme-color" content="#0D0D0F" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body className="antialiased h-full overflow-hidden">{children}</body>

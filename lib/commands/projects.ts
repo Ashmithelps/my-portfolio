@@ -9,22 +9,26 @@ const projectsCmd: Command = {
   handler({ flags }) {
     const showAll = flags['all'] === true
     const list = showAll ? projects : projects.filter((p) => p.highlight)
+
     const lines: OutputLine[] = [
-      { type: 'text', value: 'Projects', className: 'text-bright' },
+      { type: 'text', value: 'projects', className: 'header' },
+      { type: 'text', value: '────────────────────────────────────────', className: 'text-dim' },
       { type: 'br' },
     ]
-    list.forEach((p, i) => {
-      lines.push({ type: 'text', value: `  ${String(i + 1).padStart(2)}. ${p.name}${p.year ? ` (${p.year})` : ''}`, className: 'text-bright' })
-      lines.push({ type: 'text', value: `      ${p.description}` })
-      lines.push({ type: 'text', value: `      Stack: ${p.tech.join(', ')}`, className: 'text-dim' })
-      if (p.url) lines.push({ type: 'link', label: `      Live → ${p.url}`, href: p.url })
-      if (p.repo) lines.push({ type: 'link', label: `      Repo → ${p.repo}`, href: p.repo })
+
+    list.forEach((p) => {
+      lines.push({ type: 'text', value: `  ${p.name}${p.year ? `  (${p.year})` : ''}`, className: 'text-bright' })
+      lines.push({ type: 'text', value: `  ${p.description}` })
+      lines.push({ type: 'text', value: `  ${p.tech.join(' · ')}`, className: 'text-dim' })
+      if (p.url)  lines.push({ type: 'link', label: `  live  →  ${p.url}`,  href: p.url })
+      if (p.repo) lines.push({ type: 'link', label: `  repo  →  ${p.repo}`, href: p.repo })
       lines.push({ type: 'br' })
     })
+
     const slug0 = list[0]?.name.toLowerCase().replace(/\s+/g, '-')
     lines.push({
       type: 'text',
-      value: `Tip: cat projects/${slug0}.txt for details. Use --all to show all projects.`,
+      value: `  cat projects/${slug0}.txt for full detail  ·  --all to show all`,
       className: 'text-dim',
     })
     return lines

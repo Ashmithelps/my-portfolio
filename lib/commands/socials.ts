@@ -7,15 +7,19 @@ const socials: Command = {
   description: 'My social links',
   usage: 'socials',
   handler() {
-    const lines: OutputLine[] = [{ type: 'text', value: 'Social Links', className: 'text-bright' }, { type: 'br' }]
+    const lines: OutputLine[] = [
+      { type: 'text', value: 'socials', className: 'header' },
+      { type: 'text', value: '────────────────────────────────────────', className: 'text-dim' },
+      { type: 'br' },
+    ]
     if (profile.github)
-      lines.push({ type: 'link', label: `  GitHub    github.com/${profile.github}`, href: `https://github.com/${profile.github}` })
+      lines.push({ type: 'link', label: `  github      github.com/${profile.github}`, href: `https://github.com/${profile.github}` })
     if (profile.linkedin)
-      lines.push({ type: 'link', label: `  LinkedIn  linkedin.com/in/${profile.linkedin}`, href: `https://linkedin.com/in/${profile.linkedin}` })
+      lines.push({ type: 'link', label: `  linkedin    linkedin.com/in/${profile.linkedin}`, href: `https://linkedin.com/in/${profile.linkedin}` })
     if (profile.twitter)
-      lines.push({ type: 'link', label: `  Twitter   twitter.com/${profile.twitter}`, href: `https://twitter.com/${profile.twitter}` })
+      lines.push({ type: 'link', label: `  twitter     @${profile.twitter}`, href: `https://twitter.com/${profile.twitter}` })
     if (profile.website)
-      lines.push({ type: 'link', label: `  Website   ${profile.website}`, href: profile.website })
+      lines.push({ type: 'link', label: `  website     ${profile.website}`, href: profile.website })
     return lines
   },
 }
